@@ -3,7 +3,11 @@ set(C_REZ_FN_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
 function(add_c_rez)
   set(C_REZ_NAME "${ARGV0}")
   set(C_REZ_DIR "${CMAKE_CURRENT_BINARY_DIR}/_c_rez_${C_REZ_NAME}")
+
   file(MAKE_DIRECTORY "${C_REZ_DIR}")
+  file(MAKE_DIRECTORY "${C_REZ_DIR}/src/")
+  file(MAKE_DIRECTORY "${C_REZ_DIR}/include/c-rez/")
+
   get_target_property(C_REZ_IS_IMPORTED c-rez::c-rez IMPORTED)
   if (C_REZ_IS_IMPORTED)
     get_target_property(C_REZ_EXECUTABLE c-rez::c-rez LOCATION)
