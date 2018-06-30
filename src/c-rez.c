@@ -41,7 +41,7 @@ struct crez_opts {
   const char * h_output;
   const char * c_output;
   const char * files[1024];
-  int file_count;
+  unsigned file_count;
 };
 
 /**
@@ -299,6 +299,8 @@ int opts_parse_or_exit(struct crez_opts * opts,
 
   if (!opts->key)
     return print_help_and_exit("no resource key specified (use -k).");
+
+  return 0;
 }
 
 void arg_construct(struct crez_arg * arg, int argc, const char ** argv) {
@@ -517,7 +519,7 @@ void write_resource_struct_declaration(FILE * file) {
 }
 
 size_t
-write_byte(FILE * file, const unsigned char byte, size_t current_column) {
+write_byte(FILE * file, unsigned char byte, size_t current_column) {
   if (current_column > 0) {
     fprintf(file, ",");
   }

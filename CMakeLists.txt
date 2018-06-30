@@ -7,6 +7,9 @@ project(c-rez
 
 add_executable(c-rez src/c-rez.c)
 add_executable(c-rez::c-rez ALIAS c-rez)
+if (WIN32)
+  target_compile_definitions(c-rez PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+endif()
 
 install(TARGETS c-rez EXPORT c-rez-targets RUNTIME DESTINATION bin)
 include(src/c-rez-add-c-rez.cmake)
