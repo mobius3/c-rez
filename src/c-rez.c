@@ -254,10 +254,11 @@ int opts_parse_or_exit(struct crez_opts * opts,
 
   arg_construct(&state, argc, argv);
   arg_next(&state);
-  opts->c_output = opts->h_output = NULL;
+  opts->c_output = opts->h_output = (void *)0;
   opts->file_count = 0;
+  opts->key = (void *)0;
 
-  if (arg_finished(&state)) return print_help_and_exit(NULL);
+  if (arg_finished(&state)) return print_help_and_exit((void *)0);
 
   while (!arg_finished(&state)) {
     opt = arg_next(&state);
@@ -310,7 +311,7 @@ void arg_construct(struct crez_arg * arg, int argc, const char ** argv) {
 }
 
 const char * arg_next(struct crez_arg * arg) {
-  if (arg->i >= arg->argc) return NULL;
+  if (arg->i >= arg->argc) return (void *)0;
   return arg->argv[arg->i++];
 }
 
@@ -358,10 +359,10 @@ char * make_identifier(const char input[], const char prefix[]) {
 void write_files(struct crez_opts * opts) {
   unsigned i = 0;
   FILE * h_file, * c_file;
-  c_file = h_file = NULL;
-  char * h_identifier = NULL, * res_identifier = NULL;
+  c_file = h_file = (void *)0;
+  char * h_identifier = (void *)0, * res_identifier = (void *)0;
   int wants_text = 0;
-  struct crez_node * root = node_create(NULL);
+  struct crez_node * root = node_create((void *)0);
 
   if (opts->file_count == 0) {
     print_help_and_exit("no input files specified.");
@@ -548,7 +549,7 @@ void write_locate_function(FILE * h_file, FILE * c_file, const char * key,
 
 void write_node(FILE * c_file, struct crez_node * node, int level) {
   int i = 0, indent = level * 2 + 2;
-  const char * symbol = node->chilren[0] && node->chilren[0]->symbol ? node->chilren[0]->symbol : NULL;
+  const char * symbol = node->chilren[0] && node->chilren[0]->symbol ? node->chilren[0]->symbol : (void *)0;
   write_space(c_file, indent);
   fprintf(c_file, "switch (name[%d]) {\n", level);
 
@@ -604,13 +605,13 @@ int node_add_symbol(struct crez_node * node, const char * name,
   /* this will add all nodes up until what we need */
   for (key = name[0], i = 0; i < name_len; i++, key = name[i]) {
     if (!node->chilren[key]) {
-      node->chilren[key] = node_create(NULL);
+      node->chilren[key] = node_create((void *)0);
     }
     node = node->chilren[key];
   }
 
   /* only add a new node if old wasn't found */
-  if (node->chilren[0] == NULL) {
+  if (node->chilren[0] == (void *)0) {
     printf("symbol %s\n", symbol);
     node->chilren[0] = node_create(symbol);
     return 1;
