@@ -301,7 +301,7 @@ int opts_parse_or_exit(struct crez_opts * opts,
   if (!opts->key)
     return print_help_and_exit("no resource key specified (use -k).");
 
-  return 0;
+  return 1;
 }
 
 void arg_construct(struct crez_arg * arg, int argc, const char ** argv) {
