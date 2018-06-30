@@ -19,6 +19,7 @@ function(add_c_rez)
     ${C_REZ_EXECUTABLE}
     -h ${C_REZ_DIR}/${C_REZ_NAME}.h
     -c ${C_REZ_DIR}/${C_REZ_NAME}.c
+    -k ${C_REZ_NAME}
     ${ARGN}
     RESULT_VARIABLE C_REZ_RESULT
   )
