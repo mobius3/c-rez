@@ -17,12 +17,17 @@ function(add_c_rez)
   endif()
 
   list(REMOVE_AT ARGN 0)
+
+  set(C_REZ_LIBRARY_NAME _c_rez_${C_REZ_NAME})
+  set(C_REZ_C_FILE ${C_REZ_DIR}/src/${C_REZ_NAME}.c)
+  set(C_REZ_H_FILE ${C_REZ_DIR}/include/c-rez/${C_REZ_NAME}.h)
+
   execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND
     ${C_REZ_EXECUTABLE}
-    -h ${C_REZ_DIR}/${C_REZ_NAME}.h
-    -c ${C_REZ_DIR}/${C_REZ_NAME}.c
+    -h ${C_REZ_H_FILE}
+    -c ${C_REZ_C_FILE}
     -k ${C_REZ_NAME}
     ${ARGN}
     RESULT_VARIABLE C_REZ_RESULT
@@ -30,6 +35,6 @@ function(add_c_rez)
   if (C_REZ_RESULT EQUAL 1)
     message(FATAL_ERROR "c-rez failed for resource ${C_REZ_NAME}")
   endif()
-  add_library(_c_rez_${C_REZ_NAME} STATIC ${C_REZ_DIR}/${C_REZ_NAME}.h ${C_REZ_DIR}/${C_REZ_NAME}.c)
-  add_library(c-rez::${C_REZ_NAME} ALIAS _c_rez_${C_REZ_NAME})
+  add_library(${C_REZ_LIBRARY_NAME} STATIC ${C_REZ_H_FILE} ${C_REZ_C_FILE})
+  add_library(c-rez::${C_REZ_NAME} ALIAS ${C_REZ_LIBRARY_NAME})
 endfunction()
