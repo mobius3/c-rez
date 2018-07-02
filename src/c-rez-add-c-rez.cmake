@@ -22,6 +22,9 @@ function(add_c_rez)
   set(C_REZ_C_FILE ${C_REZ_DIR}/src/${C_REZ_NAME}.c)
   set(C_REZ_H_FILE ${C_REZ_DIR}/include/c-rez/${C_REZ_NAME}.h)
 
+
+  string(REPLACE ";TEXT;" ";--text;" C_REZ_INPUTS "${ARGN}")
+
   execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND
@@ -29,7 +32,7 @@ function(add_c_rez)
     -h ${C_REZ_H_FILE}
     -c ${C_REZ_C_FILE}
     -k ${C_REZ_NAME}
-    ${ARGN}
+    ${C_REZ_INPUTS}
     RESULT_VARIABLE C_REZ_RESULT
   )
   if (C_REZ_RESULT EQUAL 1)
