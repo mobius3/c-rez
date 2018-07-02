@@ -134,9 +134,12 @@ You can either compile from source or install a release archive.
 4. Create a `build` folder inside it;
 5. Run `cmake` (or `cmake-gui`), set the binary dir to the newly created
 build folder and the source dir to the repository folder;
-6. Build it with your IDE of choice.
-7. Install it with `make install` or run the *INSTALL* target (you might
-need to use **sudo** here or to adjust `CMAKE_INSTALL_PREFIX`)
+6. build it with `cmake --build . --target c-rez`
+    - Alternatively, you can open the generated project files and build them in
+    your IDE
+7. Install it with `cmake --build . --target install` (you might need to use
+ **sudo** here or to adjust `CMAKE_INSTALL_PREFIX`)
+    - If using it inside an IDE, run the *INSTALL* target
 
 **Install a release**
 
