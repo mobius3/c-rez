@@ -347,7 +347,7 @@ char * make_identifier(const char input[], const char prefix[]) {
     identifier[dst_i] = isalnum(input[src_i]) ? input[src_i] : (char) '_';
   }
   identifier[identifier_size - 1] = 0;
-  
+
   return identifier;
 }
 
@@ -357,9 +357,15 @@ void write_files(struct crez_opts * opts) {
   unsigned i = 0;
   FILE * h_file, * c_file;
   c_file = h_file = (void *)0;
-  char * h_identifier = (void *)0, * res_identifier = (void *)0;
+  char * h_identifier = (void *)0,
+    * res_identifier = (void *)0;
+  char const * basename = (void *)0;
   int wants_text = 0;
   struct crez_node * root = node_create((void *)0);
+  char separator = '/';
+#if _WIN32 || WIN32
+  separator = '\\';
+#endif
 
   if (opts->file_count == 0) {
     print_help_and_exit("no input files specified.");
@@ -382,7 +388,9 @@ void write_files(struct crez_opts * opts) {
   }
 
   if (h_file) {
-    h_identifier = make_identifier(opts->h_output, opts->key);
+    basename = strrchr(opts->h_output, separator);
+    if (!basename) basename = opts->h_output;
+    h_identifier = make_identifier(basename, opts->key);
     write_include_guard_opening(h_file, h_identifier);
     fprintf(h_file, "\n");
 
