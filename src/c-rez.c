@@ -347,8 +347,7 @@ char * make_identifier(const char input[], const char prefix[]) {
     identifier[dst_i] = isalnum(input[src_i]) ? input[src_i] : (char) '_';
   }
   identifier[identifier_size - 1] = 0;
-
-  printf(" -> %s\n", identifier);
+  
   return identifier;
 }
 
@@ -610,7 +609,6 @@ int node_add_symbol(struct crez_node * node, const char * name,
 
   /* only add a new node if old wasn't found */
   if (node->chilren[0] == (void *)0) {
-    printf("symbol %s\n", symbol);
     node->chilren[0] = node_create(symbol);
     return 1;
   }
