@@ -330,7 +330,7 @@ int arg_finished(struct crez_arg * arg) {
 
 char * make_identifier(const char input[], const char prefix[]) {
   size_t input_len = strlen(input),
-    prefix_len = strlen(prefix),
+    prefix_len = prefix ? strlen(prefix) : 0,
     identifier_size = input_len + prefix_len + sizeof '_' + 1;
   char * identifier = calloc(identifier_size, sizeof(char));
   size_t src_i = 0, dst_i = 0;
