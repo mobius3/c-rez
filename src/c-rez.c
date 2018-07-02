@@ -26,11 +26,11 @@ static const char * help_text =
   "header gets generated.\n"
   " -k <resource key>: specifies an key to identify this resource. It will be "
   "used in header guards and resource functions.\n"
-  " --text:            appends an \\0 when processing the next <input> file. "
+  " --text:            appends \\0 when processing the next <input> file. "
   "This helps when using its data as a string resource.\n"
   " <input>:           space separated list of files to read from. "
   "Declarations and definitions will be generated based on the file name.\n"
-  "                   If --text is specified before the file name, an '\\0' "
+  "                   If --text is specified before the file name, '\\0' "
   "will be appended after processing.\n";
 
 /**

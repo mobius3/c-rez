@@ -173,8 +173,8 @@ add_c_rez(images
 target_link_libraries(mygame c-rez::images)
 ```
 
-If you place the word `TEXT` before an path, it will be treated as text and an
-`\0` will be appended to its data:
+If you place the word `TEXT` before a path, it will be treated as text and a
+`\0` terminating byte will be appended to its data:
 
 ```cmake
 add_c_rez(texts
@@ -207,11 +207,11 @@ c-rez -k <resource key> [-h <output.h>] [-c <output.c>] [--text] <input_1> [[--t
 header gets generated.
 - **-k \<resource key\>**: specifies a key to identify this resource. It will
  be used in header guards and resource functions.
-- **--text**: appends a `\0` when processing the next *\<input\>*
+- **--text**: appends `\0` when processing the next *\<input\>*
 file. This helps when using its data as a string resource.
 - **\<input\>**: space separated list of files to read from.
 Declarations and definitions will be generated based on the file name. If
-`--text` is specified before the file name, an `\0` will be appended after
+`--text` is specified before the file name, `\0` will be appended after
 processing.
 
 # License
