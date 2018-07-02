@@ -52,7 +52,7 @@ typedef struct c_rez_resource {
 
 The path of input files given to the **c-rez** tool will be used to generate
 an identifier. This identifier will be the variable name declared
-in the `.h` file and defined it in the `.c`file. **c-rez** also accepts an `key`
+in the `.h` file and defined it in the `.c`file. **c-rez** also accepts a `key`
 that will be part of the generated identifiers.
 
 For instance, if you pass a resource file `img/sprites.png` and key
@@ -202,7 +202,7 @@ c-rez -k <resource key> [-h <output.h>] [-c <output.c>] [--text] <input_1> [[--t
  source gets generated.
 - **-c \<file.c\>**: specifies the source output file. If omitted, only
 header gets generated.
-- **-k \<resource key\>**: specifies an key to identify this resource. It will
+- **-k \<resource key\>**: specifies a key to identify this resource. It will
  be used in header guards and resource functions.
 - **--text**: appends a `\0` when processing the next *\<input\>*
 file. This helps when using its data as a string resource.
