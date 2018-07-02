@@ -10,6 +10,17 @@
 #include <ctype.h>
 #include <errno.h>
 
+
+#define c_rez_xstr(value) c_rez_str(value)
+#define c_rez_str(value) #value
+
+#ifndef C_REZ_MAX_FILE_COUNT
+#define C_REZ_MAX_FILE_COUNT 1024
+#endif
+
+
+#define C_REZ_MAX_ARG_COUNT (C_REZ_MAX_FILE_COUNT +1 +2 +2 +2)
+
 /**
  * help text for the program
  */
@@ -40,7 +51,7 @@ struct crez_opts {
   const char * key;
   const char * h_output;
   const char * c_output;
-  const char * files[1024];
+  const char * files[C_REZ_MAX_FILE_COUNT];
   unsigned file_count;
 };
 
@@ -251,6 +262,13 @@ int opts_parse_or_exit(struct crez_opts * opts,
                        const char * argv[]) {
   struct crez_arg state;
   const char * opt;
+
+  if (argc >= C_REZ_MAX_ARG_COUNT) {
+    return print_help_and_exit("unexcpected file count. c-rez expects at max "
+                               c_rez_xstr(C_REZ_MAX_FILE_COUNT)
+                               " files"
+    );
+  }
 
   arg_construct(&state, argc, argv);
   arg_next(&state);
