@@ -38,6 +38,21 @@ function(add_c_rez)
   if (C_REZ_RESULT EQUAL 1)
     message(FATAL_ERROR "c-rez failed for resource ${C_REZ_NAME}")
   endif()
+
+  string(REPLACE ";--text;" "" C_REZ_FILES_ONLY "${C_REZ_INPUTS}")
+
+  add_custom_command(
+    OUTPUT ${C_REZ_H_FILE} ${C_REZ_C_FILE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${C_REZ_FILES_ONLY}
+    COMMAND
+    ${C_REZ_EXECUTABLE}
+    -h ${C_REZ_H_FILE}
+    -c ${C_REZ_C_FILE}
+    -k ${C_REZ_NAME}
+    ${C_REZ_INPUTS}
+  )
+
   add_library(${C_REZ_LIBRARY_NAME} STATIC ${C_REZ_H_FILE} ${C_REZ_C_FILE})
   add_library(c-rez::${C_REZ_NAME} ALIAS ${C_REZ_LIBRARY_NAME})
   target_include_directories(${C_REZ_LIBRARY_NAME} INTERFACE ${C_REZ_DIR}/include)
