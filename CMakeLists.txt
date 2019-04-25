@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(c-rez
-  VERSION 1.0.0
+  VERSION 1.0.1
   LANGUAGES C
   DESCRIPTION "c-rez is a small tool to generate C arrays of data from files."
 )
