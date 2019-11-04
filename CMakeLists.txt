@@ -5,6 +5,9 @@ project(c-rez
   DESCRIPTION "c-rez is a small tool to generate C arrays of data from files."
 )
 
+# Honor C_VISIBILITY_PRESET and CXX_VISIBILITY_PRESET
+cmake_policy(SET CMP0063 NEW)
+
 add_executable(c-rez src/c-rez.c)
 add_executable(c-rez::c-rez ALIAS c-rez)
 if (WIN32)
