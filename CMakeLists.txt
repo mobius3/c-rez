@@ -6,15 +6,19 @@ project(c-rez
 )
 
 # Honor C_VISIBILITY_PRESET and CXX_VISIBILITY_PRESET
+cmake_policy(PUSH)
 cmake_policy(SET CMP0063 NEW)
 
-add_executable(c-rez src/c-rez.c)
-add_executable(c-rez::c-rez ALIAS c-rez)
-if (WIN32)
-  target_compile_definitions(c-rez PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+if (NOT TARGET c-rez)
+  add_executable(c-rez src/c-rez.c)
+  add_executable(c-rez::c-rez ALIAS c-rez)
+  if (WIN32)
+    target_compile_definitions(c-rez PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+  endif()
+
+  install(TARGETS c-rez EXPORT c-rez-targets RUNTIME DESTINATION bin)
 endif()
 
-install(TARGETS c-rez EXPORT c-rez-targets RUNTIME DESTINATION bin)
 include(src/c-rez-add-c-rez.cmake)
 
 # Export c-rez-config
@@ -28,3 +32,4 @@ install(FILES
   DESTINATION lib/cmake/c-rez)
 
 include(src/c-rez-cpack.cmake)
+cmake_policy(POP)
