@@ -31,10 +31,12 @@ static const char * help_text =
   "[-c <output.c>] [--text] <input_1> "
   "[[--text] <input_2>] [[--text] <input_n>]*\n"
   "\n"
-  " -h <file.h>:       specifies the header output file. If omitted, only "
-  "source gets generated.\n"
-  " -c <file.c>:       specifies the source output file. If omitted, only "
-  "header gets generated.\n"
+  " -h <file.h>:       specifies the header output file. If omitted,\n"
+  "    * if -c is specified, only source gets generated.\n"
+  "    * if -c is not specified, <key>.h is generated.\n"
+  " -c <file.c>:       specifies the source output file. When omitted,\n"
+  "    * if -h is specified, only header gets generated.\n"
+  "    * if -h is not specified, <key>.c is generated.\n"
   " -k <resource key>: specifies an key to identify this resource. It will be "
   "used in header guards and resource functions.\n"
   " --text:            appends \\0 when processing the next <input> file. "
@@ -53,6 +55,7 @@ struct crez_opts {
   const char * c_output;
   const char * files[C_REZ_MAX_FILE_COUNT];
   unsigned file_count;
+  unsigned char generated_output_name;
 };
 
 /**
@@ -252,6 +255,10 @@ int main(int argc, const char * argv[]) {
   if (!ok) return 1;
 
   write_files(&opts);
+  if (opts.generated_output_name) {
+    free((void *) opts.c_output);
+    free((void *) opts.h_output);
+  }
   return 0;
 }
 
@@ -272,11 +279,12 @@ int opts_parse_or_exit(struct crez_opts * opts,
 
   arg_construct(&state, argc, argv);
   arg_next(&state);
-  opts->c_output = opts->h_output = (void *)0;
+  opts->c_output = opts->h_output = (void *) 0;
   opts->file_count = 0;
-  opts->key = (void *)0;
+  opts->key = (void *) 0;
+  opts->generated_output_name = 0;
 
-  if (arg_finished(&state)) return print_help_and_exit((void *)0);
+  if (arg_finished(&state)) return print_help_and_exit((void *) 0);
 
   while (!arg_finished(&state)) {
     opt = arg_next(&state);
@@ -312,12 +320,18 @@ int opts_parse_or_exit(struct crez_opts * opts,
     }
   }
 
-  if (!opts->c_output && !opts->h_output)
-    return print_help_and_exit("no header nor source output specified "
-                               "(use -h and/or -c).");
-
   if (!opts->key)
     return print_help_and_exit("no resource key specified (use -k).");
+
+  if (!opts->c_output && !opts->h_output) {
+    size_t len = strlen(opts->key) + 3 /* .c\0 */;
+    char * c_output = calloc(len, sizeof(char));
+    char * h_output = calloc(len, sizeof(char));
+    snprintf(c_output, len, "%s.%c", opts->key, 'c');
+    snprintf(h_output, len, "%s.%c", opts->key, 'h');
+    opts->h_output = h_output;
+    opts->c_output = c_output;
+  }
 
   return 1;
 }
